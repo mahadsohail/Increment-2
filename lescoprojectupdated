@@ -1,0 +1,673 @@
+#include<iostream>
+#include<fstream>
+#include<string>
+#include<stdio.h>
+#include<stdlib.h>
+#include<conio.h>
+#include<time.h>
+using namespace std;
+#define size 10
+void changeofemployeespassword()
+{
+	ifstream input("EmployeesData.txt");
+	string username, password;
+	string Usernames[size] = {};
+	string Passwords[size] = {};
+	int loop = 0;
+	while (!input.eof())
+	{
+			getline(input, username, ',');
+			getline(input, password);
+			Usernames[loop] = username;
+			Passwords[loop] = password;
+			loop++;
+	}
+	input.close();
+	string usertochngpass, newpassword,prevpassword;
+	ofstream output("EmployeesData.txt");
+	cout << "Enter the username" << endl;
+	cin >> usertochngpass;
+	cout << "Enter the password" << endl;
+	cin >> prevpassword;
+	for (int i = 0; i < loop; i++)
+	{
+		if (Usernames[i]==usertochngpass&&Passwords[i]==prevpassword)
+		{
+			cout << "Enter the new password" << endl;
+			cin >> newpassword;
+			if (Passwords[i] != newpassword)
+			{
+				Passwords[i] = newpassword;
+				cout << "Password Updated" << endl;
+			}
+		}
+		output << Usernames[i] << "," << Passwords[i] << endl;
+	}
+	output.close();
+}
+void CustomerInfo()
+{
+	string customerid, Cnicnumber, Customername, address, Phonenumber, Customertype, Metertype, Connectiondate;
+	string Customerid[size], CNICnumber[size], CustomerName[size], Address[size], PhoneNumber[size], CustomerType[size], MeterType[size], ConnectionDate[size];
+	string RegularUnitsUsed, PeakHoursUnitsUsed; int costofelectricity = 0, fixedcharges = 0, totalbillingamount = 0;
+	string Regularunitsused[size], PeakHoursunitsused[size];int Costofelectricity[size] = { 0 }, Fixedcharges = { 0 }, Totalbillingamount[size] = { 0 };
+	string duedate, entrydate, paymentdate;
+	string DueDate[size] ,EntryDate[size],PaymentDate[size];
+	ofstream output("CustomerInfo.txt");
+	string username, password,Billstatus;
+	string usernameOfCustm[size], PassOfCustm[size],BillStatus[size];
+	bool billstatus = true;
+	int loop = 0;
+	if (billstatus == true)
+	{
+		BillStatus[loop] = "Paid";
+		loop++;
+	}
+	else
+	{
+		BillStatus[loop] = "Unpaid";
+		loop++;
+	}
+	int exit = _getch();
+	int prtctrl = 0;
+	while (exit != 27)
+	{
+		cout << "Enter the customer id" << endl;
+		cin >> customerid;
+		cout << "Enter the CNIC" << endl;
+		cin >> Cnicnumber;
+		cout << "Enter the Customer name" << endl;
+		cin >> Customername;
+		cout << "Enter the address" << endl;
+		cin >> address;
+		cout << "Enter the Phone number" << endl;
+		cin >> Phonenumber;
+		cout << "Enter the Customer Type" << endl;
+		cin >> Customertype;
+		cout << "Enter the Meter Type" << endl;
+		cin >> Metertype;
+		cout << "Enter te connection date" << endl;
+		cin >> Connectiondate;
+		cout << "Enter regularUnitsUsed" << endl;
+		cin >> RegularUnitsUsed;
+		cout << "Enter PeakUnitsUsed" << endl;
+		cin >> PeakHoursUnitsUsed;
+		for (int i = 0; i < size; i++)
+		{
+			Customerid[i] = customerid;
+			CNICnumber[i] = Cnicnumber;
+			CustomerName[i] = Customername;
+			Address[i] = address;
+			PhoneNumber[i] = Phonenumber;
+			CustomerType[i] = Customertype;
+			MeterType[i] = Metertype;
+			ConnectionDate[i] = Connectiondate;
+			Regularunitsused[i] = RegularUnitsUsed;
+			PeakHoursunitsused[i] = PeakHoursUnitsUsed;
+		}
+		output << Customerid[prtctrl] << "," << CNICnumber[prtctrl] << ","<<CustomerName[prtctrl]<<"," << Address[prtctrl] << "," << PhoneNumber[prtctrl] << "," << CustomerType[prtctrl] << "," << MeterType[prtctrl] << "," <<
+			ConnectionDate[prtctrl] << "," << Regularunitsused[prtctrl] << "," << PeakHoursunitsused[prtctrl] << endl;
+		prtctrl++;
+		exit = _getch();
+	}
+	output.close();
+}
+void BillingInfo()
+{
+	int number = 0;
+	ifstream inputbill("CustomerInfo.txt");
+	string customerid, dueDate, Customertype, Metertype,issueDate,PaymentDate,address, Phonenumber,Cnicnumber, Customername;
+	string Customerid[size],Paymentdate[size], CNICnumber[size], CustomerName[size], Address[size], PhoneNumber[size], Connectiondate;
+	string DueDate[size], CustomerType[size], MeterType[size],issuedate[size], ConnectionDate[size];
+	int RegularMeter=0, PeakMeter=0,TotalBillingamount=0, Costofelectricity=0, SalesTaxAmount=0, FixedCharges=0;
+	string Regularmeter[size], Peakmeter[size];int TotalBillingAmount[size] = { 0 }, costofelectricity[size] = { 0 }, SalesTaxamount[size] = { 0 }, Fixedcharges[size] = { 0 };
+	string RegularUnitsUsed, PeakHoursUnitsUsed;
+	int RegularUnitPrice=0, PeakUnitPrice=0;
+	string Regularunitsused[size], PeakHoursunitsused[size];
+	int i = 0;
+	while (!inputbill.eof())
+	{
+		getline(inputbill, customerid, ',');
+		getline(inputbill, Cnicnumber, ',');
+		getline(inputbill, Customername, ',');
+		getline(inputbill, address, ',');
+		getline(inputbill, Phonenumber, ',');
+		getline(inputbill, Customertype, ',');
+		getline(inputbill, Metertype, ',');
+		getline(inputbill, Connectiondate, ',');
+		getline(inputbill, RegularUnitsUsed,  ',');
+		getline(inputbill, PeakHoursUnitsUsed);
+		Customerid[i] = customerid;
+		CNICnumber[i] = Cnicnumber;
+		CustomerName[i] = Customername;
+		Address[i] = address;
+		PhoneNumber[i] = Phonenumber;
+		CustomerType[i] = Customertype;
+		MeterType[i] = Metertype;
+		ConnectionDate[i] = Connectiondate;
+		Regularunitsused[i] = RegularUnitsUsed;
+		PeakHoursunitsused[i] = PeakHoursUnitsUsed;
+		i++;
+	}
+	inputbill.close();
+	//cout << "Enter the issue date of bill in the Format DD/MM/YY" << endl;
+	//cin >> issueDate;
+	//cout << "Enter the due date of the bill in the Format DD/MM/YY" << endl;
+	//cin >> dueDate;
+	//cout << "Enter the date today in the Format DD/MM/YY" << endl;
+	//cin >> PaymentDate;
+	bool BillStatus = true;
+	if (!BillStatus)
+	{
+		BillStatus = false;
+		cout << "NotPaid" << endl;
+	}
+	else
+	{
+		BillStatus = true;
+		cout << "Paid" << endl;
+	}
+	int regularunits = stoi(RegularUnitsUsed);
+	int peakunits = stoi(PeakHoursUnitsUsed);
+		if (Customertype == "Domestic" && Metertype == "SinglePhase")
+		{
+			Costofelectricity = 15;
+			regularunits = RegularMeter - regularunits;
+			peakunits = 0;
+			TotalBillingamount = regularunits * Costofelectricity;
+		}
+		else if (Customertype == "Domestic" && Metertype == "SinglePhase")
+		{
+			Costofelectricity = 5;
+			regularunits = RegularMeter - regularunits;
+			peakunits = 0;
+			TotalBillingamount = regularunits * Costofelectricity;
+		}
+		else if (Customertype == "Domestic" && Metertype == "ThreePhase")
+		{
+			RegularUnitPrice = 8;
+			PeakUnitPrice = 12;
+			regularunits = RegularMeter - regularunits;
+			peakunits = PeakMeter - peakunits;
+			TotalBillingamount = peakunits * PeakUnitPrice;
+			TotalBillingamount = TotalBillingamount + regularunits* RegularUnitPrice;
+		}
+		else if (Customertype == "Commercial" && Metertype == "ThreePhase")
+		{
+			RegularUnitPrice = 18;
+			PeakUnitPrice = 25;
+			regularunits= RegularMeter - regularunits;
+			peakunits = PeakMeter - peakunits;
+			TotalBillingamount = peakunits * PeakUnitPrice;
+			TotalBillingamount = TotalBillingamount + regularunits * RegularUnitPrice;
+		}
+		cout << TotalBillingamount << endl;
+	/*ofstream outptut;
+	for (int j = 0; j < i; j++)
+	{
+		output<<
+	}*/
+}
+//part 4
+void taxinfo()
+{
+	string MeterType;
+	string Metertype[size];
+	string fixedcharges , tarriftax;
+	string fixedCharges[size], Tarriftax[size];
+	string regularUnitPrice, peakUnitPrice;
+	string regularunitprice[size], peakunitprice[size];
+	ifstream inputtax("Tarrif.txt");
+	int loop=0;
+	while (!inputtax.eof())
+	{
+		getline(inputtax, MeterType, ',');
+		getline(inputtax, regularUnitPrice, ',');
+		getline(inputtax, peakUnitPrice, ',');
+		getline(inputtax, tarriftax, ',');
+		getline(inputtax, fixedcharges);
+		Metertype[loop] = MeterType;
+		regularunitprice[loop] = regularUnitPrice;
+		peakunitprice[loop] = peakUnitPrice;
+		Tarriftax[loop] = tarriftax;
+		fixedCharges[loop] = fixedcharges;
+		loop++;
+	}
+	for (int i = 0; i < loop; i++)
+	{
+		cout << Metertype[i] << "," << regularunitprice[i] << "," << peakunitprice[i] << "," << Tarriftax[i] << "," << fixedCharges[i]<<endl;
+	}
+	inputtax.close();
+}
+//part6
+void BillingInfoChk()
+{
+	ifstream input;
+	input.open("Billinginfo.txt");
+	while (!input.eof())
+	{
+
+	}
+	input.close();
+}
+//part7
+void updateTarrifFile()
+{
+	string MeterType;
+	string Metertype[size];
+	string fixedcharges, tarriftax;
+	string fixedCharges[size], Tarriftax[size];
+	string regularUnitPrice, peakUnitPrice;
+	string regularunitprice[size], peakunitprice[size];
+	ifstream inputtax("Tarrif.txt");
+	int loop = 0;
+	while (!inputtax.eof())
+	{
+		getline(inputtax, MeterType, ',');
+		getline(inputtax, regularUnitPrice, ',');
+		getline(inputtax, peakUnitPrice, ',');
+		getline(inputtax, tarriftax, ',');
+		getline(inputtax, fixedcharges);
+		Metertype[loop] = MeterType;
+		regularunitprice[loop] = regularUnitPrice;
+		peakunitprice[loop] = peakUnitPrice;
+		Tarriftax[loop] = tarriftax;
+		fixedCharges[loop] = fixedcharges;
+		loop++;
+	}
+	string newregularUnitPrice, newpeakUnitPrice, newtarriftax, newfixedcharges,customerType;
+	cout << "Enter the metertype" << endl;
+	cin >> MeterType;
+	cout << "Enter the customerType" << endl;
+	cin >> customerType;
+	ofstream output;
+	if (MeterType == "1phase"&&customerType=="Domestic")
+	{
+		cout << "Enter the regularUnitPrice" << endl;
+		cin >> newregularUnitPrice;
+		cout << "Enter the tarrif tax" << endl;
+		cin >> newtarriftax;
+		cout << "Enter the fixed charges" << endl;
+		cin >> newfixedcharges;
+		Tarriftax[0] = newtarriftax;
+		regularunitprice[0] = newregularUnitPrice;
+		fixedCharges[0] = newfixedcharges;
+	}
+	else if (MeterType == "1phase" && customerType == "Commercial")
+	{
+		cout << "Enter the regularUnitPrice" << endl;
+		cin >> newregularUnitPrice;
+		cout << "Enter the tarrif tax" << endl;
+		cin >> newtarriftax;
+		cout << "Enter the fixed charges" << endl;
+		cin >> newfixedcharges;
+		Tarriftax[1] = newtarriftax;
+		regularunitprice[1] = newregularUnitPrice;
+		peakunitprice[1] = newpeakUnitPrice;
+		fixedCharges[1] = newfixedcharges;
+	}
+	else if (MeterType == "3phase" && customerType == "Domestic")
+	{
+		cout << "Enter the regularUnitPrice" << endl;
+		cin >> newregularUnitPrice;
+		cout << "Enter the peakUnitPrice" << endl;
+		cin >> newpeakUnitPrice;
+		cout << "Enter the tarrif tax" << endl;
+		cin >> newtarriftax;
+		cout << "Enter the fixed charges" << endl;
+		cin >> newfixedcharges;
+		Tarriftax[2] = newtarriftax;
+		regularunitprice[2] = newregularUnitPrice;
+		peakunitprice[2] = newpeakUnitPrice;
+		fixedCharges[2] = newfixedcharges;
+	}
+	else if (MeterType == "3phase" && customerType == "Commercial")
+	{
+		cout << "Enter the regularUnitPrice" << endl;
+		cin >> newregularUnitPrice;
+		cout << "Enter the peakUnitPrice" << endl;
+		cin >> newpeakUnitPrice;
+		cout << "Enter the tarrif tax" << endl;
+		cin >> newtarriftax;
+		cout << "Enter the fixed charges" << endl;
+		cin >> newfixedcharges;
+		Tarriftax[3] = newtarriftax;
+		regularunitprice[3] = newregularUnitPrice;
+		peakunitprice[3] = newpeakUnitPrice;
+		fixedCharges[3] = newfixedcharges;
+	}
+	output.open("Tariff.txt");
+	for (int i = 0; i < 4; i++)
+	{
+		output << Metertype[i] << "," << regularunitprice[i] << "," << peakunitprice[i] << "," << Tarriftax[i] << "," << fixedCharges[i] << endl;
+	}
+	output.close();
+	cout << "updated successfully ";
+}
+//part 8
+void viewbill()
+{
+	string customerid, Cnicnumber, Customername, address, Phonenumber, Customertype, Metertype, Connectiondate, RegularUnitsUsed, PeakHoursUnitsUsed;
+	string Customerid[size], CNICnumber[size], CustomerName[size], Address[size], PhoneNumber[size], CustomerType[size], MeterType[size], ConnectionDate[size];
+	string username;
+	cout << "Enter username " << endl;
+	cin >> username;
+	string password;
+	cout << "Enter valid password" << endl;
+	cin >> password;
+	string id;
+	cout << "Enter 4 digit customer id" << endl;
+	cin >> id;
+	ifstream input("CustomerInfo.txt");
+	int loop = 0;
+	while(!input.eof())
+	{
+		getline(input, customerid, ',');
+		getline(input, Cnicnumber, ',');
+		getline(input, Customername, ',');
+		getline(input, address, ',');
+		getline(input, Phonenumber, ',');
+		getline(input, Customertype, ',');
+		getline(input, Metertype, ',');
+		getline(input, Connectiondate, ',');
+		Customerid[loop] = customerid;
+		CNICnumber[loop] = Cnicnumber;
+		CustomerName[loop] = Customername;
+		Address[loop] = address;
+		PhoneNumber[loop] = Phonenumber;
+		CustomerType[loop] = Customertype;
+		MeterType[loop] = Metertype;
+		ConnectionDate[loop] = Connectiondate;
+		loop++;
+	}
+	for (int i = 0; i < loop; i++)
+	{
+		cout << Customerid[i] << "," << CNICnumber[i] << "," << CustomerName[i] << "," << Address[i] << "," << PhoneNumber[i] << "," << CustomerType[i] << "," << MeterType[i]<<","<< ConnectionDate[i] << endl;
+	}
+	input.close();
+	string  dueDate, issueDate, PaymentDate;
+	string Paymentdate[size], DueDate[size], PeakHoursunitsused[size], Regularunitsused[size];
+	for (int i = 0; i < loop; i++)
+	{
+		if (id.length() == 4 && Customerid[i] == id && CNICnumber[i] == password)
+		{
+			ifstream inputbill("BillingInfo.txt");
+			while (!input.eof())
+			{
+				getline(inputbill, customerid, ',');
+				getline(inputbill, Cnicnumber, ',');
+				getline(inputbill, Customername, ',');
+				getline(inputbill, address, ',');
+				getline(inputbill, Phonenumber, ',');
+				getline(inputbill, Customertype, ',');
+				getline(inputbill, Metertype, ',');
+				getline(inputbill, Connectiondate, ',');
+				getline(inputbill, RegularUnitsUsed, ',');
+				getline(inputbill, PeakHoursUnitsUsed);
+				Customerid[i] = customerid;
+				CNICnumber[i] = Cnicnumber;
+				CustomerName[i] = Customername;
+				Address[i] = address;
+				PhoneNumber[i] = Phonenumber;
+				CustomerType[i] = Customertype;
+				MeterType[i] = Metertype;
+				ConnectionDate[i] = Connectiondate;
+				Regularunitsused[i] = RegularUnitsUsed;
+				PeakHoursunitsused[i] = PeakHoursUnitsUsed;
+				i++;
+			}
+		}
+		else
+		{
+			cout << "Invalid id or password" << endl;
+			break;
+		}
+	}
+	input.close();
+}
+//part 9
+//void view()
+//{
+//	int digit;
+//	cout << "Enter 4 digit ID " << endl;
+//	cin >> digit;
+//	if (digit >= 4)
+//	{
+//		double cnic;
+//		cout << "Enter CNIC " << endl;
+//		cin >> cnic;
+//		int metertype;
+//		cout << "Enter meter type (1 for 1-phase and 2 for 3-phase)" << endl;
+//		cin >> metertype;
+//		if (metertype == 1)
+//		{
+//			cout << "Your meter is 1 phase" << endl;
+//		}
+//		else
+//		{
+//			cout << "Your meter is 3 phase" << endl;
+//		}
+//		double reading;
+//		cout << "Enter current meter reading" << endl;
+//		cin >> reading;
+//		//cost of electricity
+//		// tax
+//		//fixed charges
+//	}
+//	else
+//	{
+//		cout << "ID must be 4 digits" << endl;
+//	}
+//}
+//part 10
+void viewingPaidandUnpaidBills()
+{
+	string BillStatus;
+	int countP = 0;
+	int countUp = 0;
+	ifstream input("CustomerInfo.txt");
+	while (!input.eof())
+	{
+		getline(input,BillStatus);
+		if (BillStatus == "Paid")
+		{
+			countP++;
+		}
+		else
+		{
+			countUp++;
+		}
+	}
+	input.close();
+	cout << "The number of paid bills are" << endl;
+	cout << countP << endl;
+	cout << "The number of unpaid bills are" << endl;
+	cout << countUp << endl;
+}
+//part 11
+void ViewExpirydate()
+{
+	string Expiryday;
+	string Expiryyear;
+	string Expirymonth;
+	string datetoday;
+	string month;
+	string year;
+	string customername;
+	string CNIC;
+	cout << "Enter the date today (Day)" << endl;
+	cin >> datetoday;
+	cout << "Enter the date today (Day)" << endl;
+	cin >> month; 
+	cout << "Enter the date today (Day)" << endl;
+	cin >> year;
+	ifstream input("NADRADB.txt");
+	while (!input.eof())
+	{
+		getline(input, Expiryday, '/');
+		getline(input, Expirymonth, '/');
+		getline(input, Expiryyear, '/');
+	}
+	input.close();
+	input.open("CustomerInfo.txt");
+	if (Expiryday < datetoday + "30")
+	{
+		getline(input, customername, ',');
+		getline(input, CNIC, ',');
+		cout << customername << endl;
+		cout << CNIC << endl;
+	}
+	input.close();
+}
+//part 12
+void updateofexpirydate()
+{
+	ifstream input("NADRADB.txt");
+	string customerid;
+	string CNIC;
+	string expiryday;
+	string expirymonth;
+	string expiryyear;
+	string cnic;
+	string customername;
+	string updatedDay;
+	string updatedmonth;
+	string updatedyear;
+	cout << "Enter the username" << endl;
+	cin >> customerid;
+	cout << "Enter the cinic number" << endl;
+	cin >> CNIC;
+	while (!input.eof())
+	{
+		getline(input, customername, ',');
+		getline(input, cnic, ',');
+		getline(input, expiryday, '/');
+		getline(input, expirymonth, '/');
+		getline(input, expiryyear);
+	}
+	input.close();
+	ofstream output("NADRA.txt");
+	if (customerid == customername && cnic == CNIC)
+	{
+		cout << "Enter the updated expiry day" << endl;
+		cin >> updatedDay;
+		cout<< "Enter the updated expiry day" << endl;
+		cin >> updatedmonth;
+		cout << "Enter the updated expiry day" << endl;
+		cin >> updatedyear;
+		output << customerid << "," << cnic << "," << updatedDay << "/" << updatedmonth << "/" << updatedyear << endl;
+	}
+	output.close();
+}
+void displayEmployee()
+{
+	int n = 0;
+	cout << "Enter 1 for changeofemployeespassword" << endl;
+	cout << "Enter 2 for CustomerInfo" << endl;
+	cout << "Enter 3 for updateTarrifFile" << endl;
+	cout << "Enter 4 for viewbill" << endl;
+	cout << "Enter 5 for BillingInfoChk" << endl;
+	cout << "Enter 6 for ViewExpirydate" << endl;
+	cout << "Enter 7 for taxinfo" << endl;
+	cout << "Enter 8 for viewingPaidandUnpaidBills" << endl;
+	cout << "Enter the number between 1 and 8" << endl;
+	cin >> n;
+	int exit = _getch();
+	while (exit != 27)
+	{
+		if (n == 1)
+		{
+			changeofemployeespassword();
+		}
+		else if (n == 2)
+		{
+			CustomerInfo();
+		}
+		else if (n == 3)
+		{
+			updateTarrifFile();
+		}
+		else if (n == 4)
+		{
+			//viewbill();
+		}
+		else if (n == 5)
+		{
+			BillingInfoChk();
+		}
+		else if (n == 6)
+		{
+			ViewExpirydate();
+		}
+		else if (n == 7)
+		{
+			taxinfo();
+		}
+		else if (n == 8)
+		{
+			viewingPaidandUnpaidBills();
+		}
+		else
+		{
+			cout << "Enter a valid number" << endl;
+			cin >> n;
+		}
+		cout << "Press escape key to exit and enter key to continue" << endl;
+		exit = _getch();
+	}
+}
+void displayCustomer()
+{
+	int n = 0;
+	cout << "Enter the number" << endl;
+	cin >> n;
+	int exit = _getch();
+	while (exit != 27)
+	{
+		if (n == 1)
+		{
+			//view();
+		}
+		else if (n == 2)
+		{
+			updateofexpirydate();
+		}
+		else
+		{
+			cout << "Invalid option" << endl;
+			cout << "Enter the valid number" << endl;
+			cin >> n;
+		}
+		cout << "Press escape key to exit and enter to continue" << endl;
+		exit = _getch();
+	}
+}
+int main()
+{	
+	/*int number = 0;
+	cout << "Enter 1 if you are employee and 2 if customer" << endl;
+	cin >> number;
+	int exit = _getch();
+	while (exit != 27)
+	{
+		if (number == 1)
+		{
+			displayEmployee();
+		}
+		else if (number == 0)
+		{
+			displayCustomer();
+		}
+		else
+		{
+			cout << "Incorrect entry.Please enter the correct option" << endl;
+			cin >> number;
+		}
+		exit = _getch();
+	}*/
+	//changeofemployeespassword();
+	//CustomerInfo();
+	BillingInfo();
+	//viewbill();
+	return 0;
+}
